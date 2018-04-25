@@ -146,13 +146,18 @@ function scInsertSitecoreLink(sender, returnValue) {
         return;
     }
 
+    /*
+    fix for issue #95532 (commented section)
+
     var d = scEditor.getSelection().getParentElement();
 
     if ($telerik.isFirefox && d.tagName == "A") {
         d.parentNode.removeChild(d);
-    } else {
-        scEditor.fire("Unlink");
-    }
+    } else {*/
+    scEditor.fire("Unlink");
+    /*
+    fix for issue #95532 (commented section)
+    }*/
 
     var text = scEditor.getSelectionHtml();
 
