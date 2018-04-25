@@ -16,14 +16,21 @@ Telerik.Web.UI.Editor.CommandList["InsertSitecoreLink"] = function (commandName,
     var d = Telerik.Web.UI.Editor.CommandList._getLinkArgument(editor);
     Telerik.Web.UI.Editor.CommandList._getDialogArguments(d, "A", editor, "DocumentManager");
 
-    var html = editor.getSelectionHtml();
+    // ------------------ Sitecore Support fix #92179-----------------------------
+    var html = editor.getSelectedElement().outerHTML;
 
     var id;
 
     // internal link in form of <a href="~/link.aspx?_id=110D559FDEA542EA9C1C8A5DF7E70EF9">...</a>
     if (html) {
         id = GetMediaID(html);
+        var regex = /link.aspx\?_id=([\w\d]+)/;
+        var match = regex.exec(html);
+        if (match && match.length >= 1 && match[1]) {
+            id = match[1];
+        }
     }
+    // ------------------ Sitecore Support fix #92179-----------------------------
 
     // link to media in form of <a href="-/media/CC2393E7CA004EADB4A155BE4761086B.ashx">...</a>
     if (!id) {
